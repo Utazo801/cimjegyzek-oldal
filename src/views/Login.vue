@@ -48,12 +48,15 @@ export default {
   },
   methods: {
     login() {
-      Dataservice.login({
-        userid: this.userid,
-        password: this.password,
-      }).then((resp) => {
-        console.log(resp);
-      });
+      if (this.userid != "" && this.password != "") {
+        Dataservice.login({
+          request: 1,
+          userid: this.userid,
+          password: this.password,
+        }).then((resp) => {
+          console.log(resp);
+        });
+      }
     },
   },
 };
