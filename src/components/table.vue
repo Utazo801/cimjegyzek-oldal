@@ -25,6 +25,7 @@
             <th scope="col">Tel. típus</th>
             <th scope="col">E-mail cím</th>
             <th scope="col">E-mail típus</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -36,6 +37,15 @@
             <td>{{ p.Label }}</td>
             <td>{{ p.Email }}</td>
             <td>{{ p.EmailLabel }}</td>
+            <td>
+              <button
+                class="btn btn-outline-primary"
+                :value="p.peopleId"
+                @click="selectPerson"
+              >
+                X
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -44,6 +54,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Dataservice from "../services/dataservice";
 
 export default {
@@ -52,13 +63,14 @@ export default {
   data() {
     return {
       name: "",
-      peopleList: [],
+      peopleList: this.$store.getters.getPeopleData,
     };
   },
   mounted() {
     Dataservice.peoplelist().then((resp) => {
       this.peopleList = resp.data;
     });
+    this.$store.dispatch("getPeopleData");
   },
   methods: {
     search() {
@@ -66,6 +78,10 @@ export default {
         this.peopleList = resp.data;
       });
     },
+    selectPerson() {},
+  },
+  computed: {
+    ...mapGetters(["getPeopleData"]),
   },
 };
 </script>

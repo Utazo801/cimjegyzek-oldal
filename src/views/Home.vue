@@ -1,17 +1,27 @@
 <template>
-  <div class="home">
+  <div class="home container">
     <h1>Címjegyzék</h1>
+    <Logout />
     <Table />
+    <DataManipulators />
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import Dataservice from "../services/dataservice";
+
 import Table from "../components/table";
+import Logout from "../components/logout";
+import DataManipulators from "../components/data-manipulators";
+
 export default {
   name: "Home",
   components: {
     Table,
+    Logout,
+    DataManipulators,
   },
   data() {
     return {
@@ -22,6 +32,9 @@ export default {
     Dataservice.peoplelist().then((resp) => {
       this.peopleList = resp.data;
     });
+  },
+  computed: {
+    ...mapGetters(["getLoggedIn"]),
   },
 };
 </script>

@@ -19,11 +19,15 @@
             type="password"
             class="form-control"
             id="password"
-            name="password"
-            v-model="password"
+            name="pwd"
+            v-model="pwd"
           />
         </div>
-        <button type="submit" class="btn btn-primary mt-2" @click="login">
+        <button
+          type="button"
+          class="btn btn-outline-primary mt-2"
+          @click="login"
+        >
           Submit
         </button>
       </form>
@@ -33,31 +37,47 @@
       Felhasználónév: admin <br />
       Jelszó: admin
     </p>
+    <Logout />
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import Dataservice from "../services/dataservice";
+import Logout from "../components/logout";
 export default {
-  name: "login",
+  name: "Login",
+  components: {
+    Logout,
+  },
   data() {
     return {
       userid: "",
-      password: "",
+      pwd: "",
     };
   },
   methods: {
     login() {
       if (this.userid != "" && this.password != "") {
         Dataservice.login({
-          request: 1,
           userid: this.userid,
-          password: this.password,
-        }).then((resp) => {
-          console.log(resp);
+          pwd: this.pwd,
+        }).then((res) => {
+          this.$store.dispatch("changeLoginStatus", res.data[0].status);
+          this.$router.push("/");
         });
+
+        if (this.isLoggedIn == false) {
+          alert("hibás felhasználónév vagy jelszó");
+        }
+      } else {
+        alert("Üres mezők");
       }
     },
+  },
+  computed: {
+    ...mapGetters(["getLoggedIn"]),
   },
 };
 </script>
