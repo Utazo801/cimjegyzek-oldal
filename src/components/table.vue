@@ -37,18 +37,31 @@
             <td>{{ p.Label }}</td>
             <td>{{ p.Email }}</td>
             <td>{{ p.EmailLabel }}</td>
+
             <td>
               <button
-                class="btn btn-outline-primary"
-                :value="p.peopleId"
-                @click="selectPerson"
+                type="button"
+                @click="showModal"
+                class="btn btn-warning mx-2 mt-1"
               >
-                X
+                Módosítás
+              </button>
+              <button
+                type="button"
+                @click="showModal"
+                class="btn btn-danger mx-2 mt-1"
+              >
+                Törlés
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="border-top">
+      <router-link to="/person/new" class="btn btn-success mx-2 mt-1">
+        Új felvétele
+      </router-link>
     </div>
   </div>
 </template>

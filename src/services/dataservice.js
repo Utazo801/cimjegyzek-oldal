@@ -31,7 +31,11 @@ export default {
                 return Promise.reject(err);
             });
     },
-    logout() {
-
+    newPersonInsert(data) {
+        return Axios.post(BACKEND_URL + "insertnew.php", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+            .then(res => { return res; })
+            .catch(err => {
+                return Promise.reject(err);
+            });
     }
 }

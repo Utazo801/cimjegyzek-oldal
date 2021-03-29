@@ -6,7 +6,6 @@ const store = createStore({
         return {
             isLoggedIn: false,
             peopleData: [],
-            modal: false,
         }
     },
     getters: {
@@ -16,9 +15,7 @@ const store = createStore({
         getPeopleData(state) {
             return state.peopleData;
         },
-        getModal(state) {
-            return state.modal;
-        }
+
     },
     actions: {
         changeLoginStatus(state, isLoggedIn) {
@@ -34,9 +31,7 @@ const store = createStore({
                 });
 
         },
-        getModal(state, modal) {
-            state.commit("getModal", modal);
-        }
+
 
     },
     mutations: {
@@ -46,9 +41,7 @@ const store = createStore({
         getPeopleData(state, data) {
             state.peopleData = data;
         },
-        getModal(state, modal) {
-            state.modal = modal;
-        }
+
     }
 });
 export default store;
