@@ -5,7 +5,8 @@ const store = createStore({
     state() {
         return {
             isLoggedIn: false,
-            peopleData: []
+            peopleData: [],
+            modal: false,
         }
     },
     getters: {
@@ -13,7 +14,10 @@ const store = createStore({
             return state.isLoggedIn;
         },
         getPeopleData(state) {
-            return state.peopleData
+            return state.peopleData;
+        },
+        getModal(state) {
+            return state.modal;
         }
     },
     actions: {
@@ -29,6 +33,9 @@ const store = createStore({
                     return Promise.reject(err);
                 });
 
+        },
+        getModal(state, modal) {
+            state.commit("getModal", modal);
         }
 
     },
@@ -38,6 +45,9 @@ const store = createStore({
         },
         getPeopleData(state, data) {
             state.peopleData = data;
+        },
+        getModal(state, modal) {
+            state.modal = modal;
         }
     }
 });
