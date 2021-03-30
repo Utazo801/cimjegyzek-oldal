@@ -1,6 +1,6 @@
 <template>
   <div class="m-auto container">
-    <h1 class="border-bottom">Új Személy felvétele</h1>
+    <h1 class="border-bottom">{{ personData.Name }} adatainak módisítása</h1>
     <form>
       <div
         class="form-group row mx-auto mb-2 mt-3 d-flex justify-content-center"
@@ -64,7 +64,7 @@
       </div>
       <button
         type="button"
-        @click="dataSending"
+        @click="updateData"
         class="btn btn-outline-success mt-2"
       >
         Mentés
@@ -81,63 +81,38 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import dataservice from "../services/dataservice";
 export default {
-  name: "NewPerson",
+  name: "UpdatePerson",
   data() {
     return {
-      personData: {
-        Name: "",
-        Address: "",
-        Workplace: "",
-        Email: "",
-        EmailLabel: "",
-        PhoneNumber: "",
-        Label: "",
-      },
+      id: this.$route.params.id,
+      personData: {},
     };
   },
   methods: {
-    dataSending() {
-      if (
-        this.personData.Name != "" ||
-        this.personData.Address != "" ||
-        this.personData.Workplace != "" ||
-        this.personData.Email != "" ||
-        this.personData.EmailLabel != "" ||
-        this.personData.PhoneNumber != "" ||
-        this.personData.Label != ""
-      ) {
-        dataservice.newPersonInsert({
-          Name: this.personData.Name,
-          Address: this.personData.Address,
-          Workplace: this.personData.Workplace,
-          Email: this.personData.Email,
-          EmailLabel: this.personData.EmailLabel,
-          PhoneNumber: this.personData.PhoneNumber,
-          Label: this.personData.Label,
-        });
-        this.personData.Name = "";
-        this.personData.Address = "";
-        this.personData.Workplace = "";
-        this.personData.Email = "";
-        this.personData.EmailLabel = "";
-        this.personData.PhoneNumber = "";
-        this.personData.Label = "";
-      } else {
-        alert("Üres mezők!");
-      }
-    },
     backToTheMenu() {
-      this.personData.Name = "";
-      this.personData.Address = "";
-      this.personData.Workplace = "";
-      this.personData.Email = "";
-      this.personData.EmailLabel = "";
-      this.personData.PhoneNumber = "";
-      this.personData.Label = "";
       this.$router.push("/");
     },
+    updateData() {
+      dataservice.updatePersonData({
+        PeopleId: this.id,
+        Name: this.personData.Name,
+        Address: this.personData.Address,
+        Workplace: this.personData.Workplace,
+        Email: this.personData.Email,
+        EmailLabel: this.personData.EmailLabel,
+        PhoneNumber: this.personData.PhoneNumber,
+        Label: this.personData.Label,
+      });
+    },
+  },
+  mounted() {
+    this.personData = this.$store.getters.getPerson(this.id);
+  },
+  computed: {
+    ...mapGetters(["getPerson"]),
   },
 };
 </script>

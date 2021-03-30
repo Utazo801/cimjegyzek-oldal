@@ -15,6 +15,9 @@ const store = createStore({
         getPeopleData(state) {
             return state.peopleData;
         },
+        getPerson: (state) => (id) => {
+            return state.peopleData.find(peopleData => peopleData.PeopleId === id)
+        }
 
     },
     actions: {

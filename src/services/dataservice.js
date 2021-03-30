@@ -4,7 +4,7 @@ export default {
     peoplelist() {
         return Axios.get(BACKEND_URL + 'peoplelist.php')
             .then(res => {
-                //console.log(res);
+
                 return res;
             })
             .catch(err => {
@@ -24,7 +24,6 @@ export default {
 
         return Axios.post(BACKEND_URL + "login.php", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then(res => {
-                console.log(res.data[0]);
                 return res;
             })
             .catch(err => {
@@ -37,5 +36,24 @@ export default {
             .catch(err => {
                 return Promise.reject(err);
             });
+    },
+    updatePersonData(data) {
+        return Axios.post(BACKEND_URL + "update.php", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+            .then(res => {
+                return res;
+            })
+            .catch(err => {
+                return Promise.reject(err);
+            });
+    },
+    deleteUser(data) {
+        return Axios.post(BACKEND_URL + "delete.php", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+            .then(res => {
+                return res;
+            })
+            .catch(err => {
+                return Promise.reject(err);
+            });
     }
+
 }

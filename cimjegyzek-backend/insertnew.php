@@ -11,45 +11,35 @@
 
         $stmt = $conn->prepare($sql);
 
-        $name = '%'.$request->Name.'%';
-        $address = '%'.$request->Address.'%';
-        $workplace = '%'.$request->Workplace.'%';
+        $name = $request->Name;
+        $address = $request->Address;
+        $workplace = $request->Workplace;
 
-        $stmt->bind_param("sss",$Name,$address,$workplace);
+        $stmt->bind_param("sss",$name,$workplace,$address);
 
         $stmt->execute();
         $personId = $conn->insert_id;
 
         $Personresult = $stmt->get_result();
-        echo "Person: ".json_encode($Personresult);
-        echo " Person Id: ".$personId;
+        
+        $emailsql = "INSERT INTO `emails`(`Email`, `EmailLabel`, `PeopleId`) VALUES (?,?,?)";
+        $emailstmt = $conn->prepare($emailsql);
 
-        if($Personresult->num_rows > 0){
-            $emailsql = "INSERT INTO `emails`(`Email`, `EmailLabel`, `PeopleId`) VALUES (?,?,?)";
-            $emailstmt = $conn->prepare($emailsql);
+        $email = $request->Email;
+        $emailLabel = $request->EmailLabel;
 
-            $email = '%'.$request->Email.'%';
-            $emailLabel = '%'.$request->EmailLabel.'%';
-
-            $emailstmt->bind_param("sss",$email,$emailLabel,$personId);
-            $emailstmt->execute();
-            $emailResult = $emailstmt->get_result();
+        $emailstmt->bind_param("sss",$email,$emailLabel,$personId);
+        $emailstmt->execute();
+        $emailResult = $emailstmt->get_result();
 
 
-            $phonesql = "INSERT INTO `phonenumbers`(`PhoneNumber`, `Label`, `PeopleId`) VALUES (?,?, ?)";
-            $phonestmt = $conn->prepare($phonesql);
+        $phonesql = "INSERT INTO `phonenumbers`(`PhoneNumber`, `Label`, `PeopleId`) VALUES (?,?,?)";
+        $phonestmt = $conn->prepare($phonesql);
 
-            $phoneNumber = '%'.$request->PhoneNumber.'%';
-            $label = '%'.$request->Label.'%';
+        $phoneNumber = $request->PhoneNumber;
+        $label = $request->Label;
 
-            $phonestmt->bind_param("sss",$phonesql, $label, $personId);
-            $phonestmt->execute();
-            $phoneResult = $phonestmt->get_result();
-            echo "Email: ".json_encode($emailResult);
-            echo "Phone:".json_encode($phoneResult);
-
-            
-        }
+        $phonestmt->bind_param("sss",$phoneNumber, $label, $personId);
+        $phonestmt->execute();
+        $phoneResult = $phonestmt->get_result();
     }
-
-?>

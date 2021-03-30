@@ -38,17 +38,16 @@
             <td>{{ p.Email }}</td>
             <td>{{ p.EmailLabel }}</td>
 
-            <td>
-              <button
-                type="button"
-                @click="showModal"
-                class="btn btn-warning mx-2 mt-1"
+            <td v-if="this.$store.state.isLoggedIn">
+              <router-link
+                class="btn btn-warning"
+                :to="'/person/update/' + p.PeopleId"
               >
                 Módosítás
-              </button>
+              </router-link>
               <button
                 type="button"
-                @click="showModal"
+                @click="YeetUser(p.PeopleId)"
                 class="btn btn-danger mx-2 mt-1"
               >
                 Törlés
@@ -58,7 +57,7 @@
         </tbody>
       </table>
     </div>
-    <div class="border-top">
+    <div v-if="this.$store.state.isLoggedIn" class="border-top">
       <router-link to="/person/new" class="btn btn-success mx-2 mt-1">
         Új felvétele
       </router-link>
@@ -79,7 +78,7 @@ export default {
       peopleList: this.$store.getters.getPeopleData,
     };
   },
-  mounted() {
+  created() {
     Dataservice.peoplelist().then((resp) => {
       this.peopleList = resp.data;
     });
@@ -91,7 +90,10 @@ export default {
         this.peopleList = resp.data;
       });
     },
-    selectPerson() {},
+    YeetUser(id) {
+      Dataservice.deleteUser({ PeopleId: id });
+      this.$store.dispatch("getPeopleData");
+    },
   },
   computed: {
     ...mapGetters(["getPeopleData"]),

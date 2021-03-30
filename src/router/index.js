@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import NewPerson from '../views/NewPerson'
+import UpdatePerson from '../views/UpdatePerson';
+import Error404 from "../components/404.vue";
 
 const routes = [
   {
@@ -15,7 +17,9 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
 
-  { path: "/person/new", component: NewPerson }
+  { path: "/person/new", component: NewPerson },
+  { path: "/person/update/:id(\\d+)", component: UpdatePerson },
+  { path: "/:pathMatch(.*)*", component: Error404, alias: "/error404" },
 ]
 
 const router = createRouter({
